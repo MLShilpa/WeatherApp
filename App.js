@@ -1,14 +1,13 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import Store from '/Volumes/Development/Projects/WeatherApp/src/redux/Store.js'
 
 import DrawerNav from '../WeatherApp/src/navigation/DrawerNav'
-import { NavigationContainer} from "@react-navigation/native";
-import Home from './src/screens/home/Home';
-import Empty from './src/components/Empty';
 const App = () => {
   return(
-    <NavigationContainer>
-      <DrawerNav/>
-    </NavigationContainer>
+   <Provider store={Store}>
+    <DrawerNav/>
+   </Provider>
 
   )
 };

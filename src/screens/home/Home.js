@@ -9,6 +9,7 @@ import {
   Image,
   ScrollView,
   Pressable,
+  TouchableOpacity
 } from 'react-native';
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -20,11 +21,16 @@ import icon_favourite from '../../assets/icons/icon_favourite.png';
 import icon_mostly_sunny_small from '../../assets/icons/icon_mostly_sunny_small.png';
 
 import ScrollBar from '../../components/ScrollBar';
+import Search from '../search/Search';
 
 const Home = ({navigation}) => {
     const handleDrawer= () => {
         navigation.openDrawer();
     }
+    const handleSearch = () => {
+      navigation.navigate('Search');
+    }
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -39,7 +45,9 @@ const Home = ({navigation}) => {
             </Pressable>
             <Image source={logo} style={styles.logo}></Image>
           </View>
-          <Image source={icon_search} style={styles.search}></Image>
+          <TouchableOpacity onPress={handleSearch}>
+            <Image source={icon_search} style={styles.search}></Image>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.textView}>
