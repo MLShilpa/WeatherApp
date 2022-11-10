@@ -9,24 +9,45 @@ import {
   FlatList,
   TouchableOpacity
 } from 'react-native';
+
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { deleteCity,setFavourite } from '../redux/FavouriteSlice';
+import { getData } from '../redux/WeatherSlice';
   
-  const ListView=()=>{
-    const DATA = useSelector( state => state.weather.value)
+  const ListView = ({navigation,onPress}) =>{
+    const dispatch = useDispatch();
+
+    const data = useSelector(state => state.favourite.value);
+
+    console.log(data)
 
     return(
 
         <View>
+          <Text></Text>
         <View style={styles.content}>
-          <Text style={styles.addedText}>{DATA.length} City added as favourite</Text>
-          <TouchableOpacity>
+          <Text style={styles.addedText}>{data.length} City added as favourite</Text>
+          <TouchableOpacity onPress={onPress}>
             <Text style={styles.removeAll}>Remove All</Text>
           </TouchableOpacity>
         </View>
-        <FlatList
-        data={DATA}
-       renderItem={({item})=>(
         <View>
+        <FlatList
+        data={data}
+        keyExtractor = {item => item.city}
+            renderItem={({item}) => (
+              <Pressable  
+              onPress={() => {
+                dispatch(getData(item.id));
+                navigation.navigate('HomeScreen');
+              }}
+              onLongPress={() => {
+                dispatch(deleteCity({id: item.city}));
+                dispatch(setFavourite(false))
+                // Toast.show(`Deleted ${item.city} Successfully`);
+              }}
+              >
         <View style={styles.listItem}>
           <View>
             <Text style={styles.location}>{item.city}</Text>
@@ -41,16 +62,22 @@ import { useSelector } from 'react-redux';
             </View>
           </View>
           <View>
+            <TouchableOpacity onPress={()=> {
+               dispatch(deleteCity({id: item.city}));
+               dispatch(setFavourite(false))
+            }}>
             <Image
               source={require('/Volumes/Development/Projects/WeatherApp/src/assets/icons/icon_favourite_active.png')}
               style={styles.favIcon}
             />
+            </TouchableOpacity>
           </View>
         </View>
-      </View>
+
+        </Pressable>
         )}
-        keyExtractor={item => item.id}
         />
+        </View>
         </View>
 
     )

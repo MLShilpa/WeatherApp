@@ -1,11 +1,35 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { persistReducer } from "redux-persist";
+import { combineReducers } from "@reduxjs/toolkit";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import FavouriteReducer from "./FavouriteSlice";
+import SliceReducer from './WeatherSlice'
 
-import SliceReducer from '../redux/Slice'
+const persistConfig = {
+    key: 'root',
+    version:1,
+    storage: AsyncStorage,
+};
 
-const Store = configureStore({
-    reducer:{
-        weather: SliceReducer,
-},
+const reducer = combineReducers({
+    weather: SliceReducer,
+    favourite: FavouriteReducer,
+});
+
+const persistRed = persistReducer(persistConfig, reducer);
+
+export default configureStore({
+    reducer:persistRed,
+    middleware: getDefaultMiddleware => 
+    getDefaultMiddleware({
+        serializableCheck:false,
+    }),
 })
 
-export default Store;
+// const Store = configureStore({
+//     reducer:{
+//         weather: SliceReducer,
+// },
+// })
+
+// export default Store;

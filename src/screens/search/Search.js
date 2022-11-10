@@ -7,26 +7,62 @@ import {
   TextInput,
   StatusBar,
   Image,
+  Pressable
 } from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import icon_clear from '../../assets/icons/icon_clear.png';
+import { FlatList } from 'react-native-gesture-handler';
+import { SearchApi } from '../../services/SearchApi';
+import { getData } from '../../redux/WeatherSlice';
+import { setFavourite , recentCity} from '../../redux/FavouriteSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
-const Search = ({navigation}) => {
-  const [icon, setcon] = useState(null);
+
+const Search = ({setSearch,search}) => {
+  const favourite = useSelector(state=> state.favourite.recentState)
+
+  const list = useSelector(state=>state.weather.list)
+  const source =  {uri: `https:${list.current?.condition.icon}`};
+  const [celcius, setCelsius] = useState(list.current?.temp_c);
+
+  const [data,setData] = useState ()
+  const dispatch = useDispatch();
+
+
+  const [icon, setIcon] = useState(null);
   const [text, setText] = useState();
 
-  const handleChange = value => {
+  const handleChange = async value => {
     setText(value);
-    setcon(icon_clear);
+    setIcon(icon_clear);
+    const Data = await SearchApi(value)
+    setData(Data)
+    console.log('I am Data',Data)
   };
   const handleClear = () => {
     setText();
   };
 
   const handleBack = () => {
-    navigation.goBack();
+    setSearch(!search)
   };
+  const obj = {
+    id: list.location?.name,
+    city: list.location?.name,
+    source: source,
+    temperature: celcius,
+    description: list.current?.condition.text,
+    favourite:favourite,
+  };
+
+  const handleSearch = (item) => {
+    setText(item.name)
+    dispatch(setFavourite(false))
+    setSearch(!search)
+    dispatch(getData(item.name))
+    dispatch(recentCity(obj))
+  }
   return (
     <SafeAreaView>
       <StatusBar
@@ -60,7 +96,23 @@ const Search = ({navigation}) => {
           )}
         </View>
       </View>
+
       <View style={styles.line} />
+
+      <View >
+          <FlatList
+        data={data}
+        renderItem={({item})=>(
+          (
+            <Pressable onPress={()=>handleSearch(item)}>
+           <View style={styles.flatStyle}>
+            <Text>{item.name}</Text>
+            </View>
+            </Pressable>
+          )
+        )}
+          />
+        </View>
     </SafeAreaView>
   );
 };
@@ -103,5 +155,17 @@ const styles = StyleSheet.create({
     height: 14,
     width: 14,
     marginRight:10,
+  },
+  flatStyle:{
+    height: 56,
+    width: '100%',
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomColor: 'rgba(105,105,105,0.2)',
+    borderBottomWidth: 1,
   },
 });

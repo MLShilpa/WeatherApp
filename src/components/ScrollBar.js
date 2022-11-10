@@ -1,12 +1,14 @@
 import React from 'react';
 
 import {Text, View, ScrollView, StyleSheet, Image} from 'react-native';
+import { useSelector } from 'react-redux';
 
 import icon_temperature_info from '../assets/icons/icon_temperature_info.png';
 import icon_humidity_info from '../assets/icons/icon_humidity_info.png';
 import icon_precipitation_info from '../assets/icons/icon_precipitation_info.png';
 
 const ScrollBar = () => {
+  const list = useSelector(state => state.weather.list);
   return (
     <View style={styles.detailView}>
       <ScrollView horizontal={true}>
@@ -26,7 +28,7 @@ const ScrollBar = () => {
               <Image source={icon_precipitation_info} style={styles.pecipitationIcon} />
               <View>
                 <Text style={styles.minmax}>Precipitation</Text>
-                <Text style={styles.tempNumber}>0%</Text>
+                <Text style={styles.tempNumber}>{list?.current?.precip_mm}%</Text>
               </View>
             </View>
           </View>
@@ -36,7 +38,7 @@ const ScrollBar = () => {
               <Image source={icon_humidity_info} style={styles.humidityIcon} />
               <View>
                 <Text style={styles.minmax}>Humidity</Text>
-                <Text style={styles.tempNumber}>47%</Text>
+                <Text style={styles.tempNumber}>{list?.current?.humidity}</Text>
               </View>
             </View>
           </View>
