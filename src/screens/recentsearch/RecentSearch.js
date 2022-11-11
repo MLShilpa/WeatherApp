@@ -36,8 +36,7 @@ const RecentSearch = ({navigation}) => {
       onPress: () => console.log('No Pressed'),
     },
     {text: 'YES', onPress: () => {
-      dispatch(clearAll())
-      setRemove(!remove)}},
+      dispatch(clearAll())}}
   ]);
   return (
     <View style={styles.container}>

@@ -18,7 +18,7 @@ const ScrollBar = () => {
               <Image source={icon_temperature_info} style={styles.tempIcon} />
               <View>
                 <Text style={styles.minmax}>Min - Max</Text>
-                <Text style={styles.tempNumber}>22°- 34°</Text>
+                <Text style={styles.tempNumber}>{list?.current?.temp_c-5}°- {list?.current?.temp_c+5}°</Text>
               </View>
             </View>
           </View>
@@ -38,7 +38,7 @@ const ScrollBar = () => {
               <Image source={icon_humidity_info} style={styles.humidityIcon} />
               <View>
                 <Text style={styles.minmax}>Humidity</Text>
-                <Text style={styles.tempNumber}>{list?.current?.humidity}</Text>
+                <Text style={styles.tempNumber}>{list?.current?.humidity}%</Text>
               </View>
             </View>
           </View>
@@ -92,10 +92,11 @@ const styles = StyleSheet.create({
   tempNumber: {
     height: 21,
     color: '#FFFFFF',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '500',
     letterSpacing: 0,
     lineHeight: 21,
+
   },
   pecipitationIcon:{
     height: 23,

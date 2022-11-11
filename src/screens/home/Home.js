@@ -33,7 +33,7 @@ const Home = ({navigation}) => {
   const list = useSelector(state => state.weather.list);
   const source = {uri: `https:${list.current?.condition.icon}`};
 
-  const [celcius, setCelsius] = useState(list.current?.temp_c);
+  const [celcius, setCelsius] = useState(list?.current?.temp_c);
 
   const favourite = useSelector(state => state.favourite.favourite);
   const [clicked, setClicked] = useState(favourite);
@@ -75,6 +75,7 @@ const Home = ({navigation}) => {
   const obj = {
     id: list.location?.name,
     city: list.location?.name,
+    region:list.location?.region,
     source: source,
     temperature: celcius,
     description: list.current?.condition.text,
@@ -90,7 +91,16 @@ const Home = ({navigation}) => {
     (
       dispatch(setFavourite(true)),
       dispatch(addCity(obj)))
-  };
+      if(!favourite)
+      {
+        dispatch(setFavourite(true))
+
+      } else{
+        dispatch(setFavourite(false))
+      }
+  }
+  
+  ;
   return (
     <>
       {!search ? (
@@ -115,7 +125,7 @@ const Home = ({navigation}) => {
               <View style={styles.textView}>
                 <Text style={styles.text}>{date}</Text>
                 <Text style={styles.place}>
-                  {list.location.name},{list.location.region}
+                  {list.location?.name},{list.location?.region}
                 </Text>
 
                 <View style={styles.favouriteView}>
@@ -144,7 +154,7 @@ const Home = ({navigation}) => {
 
                 <View style={styles.temperatureView}>
                   <Image
-                    source={{uri: `https:${list.current.condition?.icon}`}}
+                    source={{uri: `https:${list.current?.condition.icon}`}}
                     style={styles.sun}></Image>
 
                   <View style={styles.numView}>
@@ -173,7 +183,7 @@ const Home = ({navigation}) => {
                   </View>
 
                   <Text style={styles.tempText}>
-                    Mostly {list.current?.condition.text}
+                    {list.current?.condition.text}
                   </Text>
                 </View>
               </View>
@@ -265,19 +275,19 @@ const styles = StyleSheet.create({
   temperatureView: {
     marginTop: 80,
     alignItems: 'center',
+    // flexDirection:
   },
   numView: {
-    marginTop: 15,
+    marginTop: 13,
     flexDirection: 'row',
-    alignItems: 'baseline',
-    paddingBottom: 5,
   },
   number: {
-    height: 59,
+    height: 61,
     color: '#FFFFFF',
     fontFamily: 'Roboto-Regular',
     fontSize: 52,
     fontWeight: '500',
+    lineHeight:66,
   },
   sun: {
     height: 80,
@@ -312,6 +322,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     borderWidth: 1,
     borderColor: '#FFFFFF',
+    fontFamily: 'Roboto-Regular',
   },
   faranheit: {
     height: 30,
@@ -322,5 +333,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'white',
     borderRadius: 2,
+    fontFamily: 'Roboto-Regular',
   },
 });

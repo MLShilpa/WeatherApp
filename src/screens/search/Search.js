@@ -50,6 +50,7 @@ const Search = ({setSearch,search}) => {
   const obj = {
     id: list.location?.name,
     city: list.location?.name,
+    region:list.location?.region,
     source: source,
     temperature: celcius,
     description: list.current?.condition.text,
@@ -66,7 +67,7 @@ const Search = ({setSearch,search}) => {
   return (
     <SafeAreaView>
       <StatusBar
-        barStyle="light-content"
+        barStyle="dark-content"
         hidden={false}
         backgroundColor="#673AB7"
       />
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth:1,
+    // borderWidth:1,
     justifyContent:'space-between'
   },
   backIcon: {

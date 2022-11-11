@@ -9,7 +9,7 @@ export const FavouriteSlice =createSlice({
       value:[],
       recent:[],
       favourite:false,
-      recentState:false,
+      recentFavState:false,
     },
     reducers:{
         addCity: (state, action) => {
@@ -39,9 +39,11 @@ export const FavouriteSlice =createSlice({
           },
 
 
-          setRecent:(state,action)=>{
-            state.recentState = action.payload
+          setRecentFav:(state,action)=>{
+            state.recentFavState = action.payload
           },
+
+
           removeAll:(state,action)=>{
             state.value=[];
           },
@@ -51,5 +53,5 @@ export const FavouriteSlice =createSlice({
     }
 })
 
-export const {addCity,deleteCity, setFavourite, recentCity, deleteRecentCity, setRecent,clearAll,removeAll} =FavouriteSlice.actions;
+export const {addCity,deleteCity, setFavourite, recentCity, deleteRecentCity, setRecentFav,clearAll,removeAll} =FavouriteSlice.actions;
 export default FavouriteSlice.reducer;

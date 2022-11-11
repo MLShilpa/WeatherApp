@@ -25,7 +25,6 @@ import { getData } from '../redux/WeatherSlice';
     return(
 
         <View>
-          <Text></Text>
         <View style={styles.content}>
           <Text style={styles.addedText}>{data.length} City added as favourite</Text>
           <TouchableOpacity onPress={onPress}>
@@ -50,7 +49,7 @@ import { getData } from '../redux/WeatherSlice';
               >
         <View style={styles.listItem}>
           <View>
-            <Text style={styles.location}>{item.city}</Text>
+            <Text style={styles.location}>{item.city}, {item.region}</Text>
             <View style={styles.tempDetails}>
               <Image
                 source={item.source}
@@ -89,8 +88,7 @@ import { getData } from '../redux/WeatherSlice';
     content: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: 16,
-        paddingVertical: 15,
+        margin:16,
       },
       addedText: {
         height: 15,
@@ -103,7 +101,7 @@ import { getData } from '../redux/WeatherSlice';
         height: 15,
         color: '#FFFFFF',
         fontSize: 13,
-        fontWeight: '500',
+        fontWeight: '600',
         letterSpacing: 0,
         lineHeight: 15,
       },
