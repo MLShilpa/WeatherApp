@@ -12,107 +12,69 @@ import {
 
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
-import {
-
-  deleteRecentCity,
-  setFavourite,
-
-} from '../redux/FavouriteSlice';
+import {deleteRecentCity, setFavourite} from '../redux/FavouriteSlice';
 import {getData} from '../redux/WeatherSlice';
 
-const RecentList = ({navigation, onPress}) => {
+const RecentList = ({navigation}) => {
   const dispatch = useDispatch();
 
   const favourite = useSelector(state => state.favourite.favourite);
 
   const data = useSelector(state => state.favourite.recent);
 
-  console.log(data);
-
   return (
-    <View>
-      <Text></Text>
-      <View style={styles.content}>
-        <Text style={styles.addedText}>You Recently searched for</Text>
-        <TouchableOpacity onPress={onPress}>
-          <Text style={styles.removeAll}>Clear All</Text>
-        </TouchableOpacity>
-      </View>
-      <View>
-        <FlatList
-          data={data}
-          keyExtractor={item => item.city}
-          renderItem={({item}) => (
-            <Pressable
-              onPress={() => {
-                dispatch(getData(item.id));
-                {
-                  item.favourite
-                    ? dispatch(setFavourite(true))
-                    : dispatch(setFavourite(false));
-                }
-                navigation.navigate('HomeScreen');
-                // Toast.show(`Deleted ${item.city} Successfully`);
-              }}>
-              <View style={styles.listItem}>
-                <View>
-                  <Text style={styles.location}>{item.city}, {item.region}</Text>
-                  <View style={styles.tempDetails}>
-                    <Image source={item.source} style={styles.weather} />
-                    <Text style={styles.actualTemp}>{item.temperature}</Text>
-                    <Text style={styles.unit}>°C</Text>
-                    <Text style={styles.description}>{item.description}</Text>
-                  </View>
-                </View>
-                <TouchableOpacity
-                  onPress={() => {
-                    dispatch(deleteRecentCity({id: item.city}));
-                  }}>
-                  {item.favourite ? (
-                    <Image
-                      source={require('/Volumes/Development/Projects/WeatherApp/src/assets/icons/icon_favourite_active.png')}
-                      style={styles.favIcon}
-                    />
-                  ) : (
-                    <Image
-                      source={require('/Volumes/Development/Projects/WeatherApp/src/assets/icons/icon_favourite.png')}
-                      style={styles.favIcon}
-                    />
-                  )}
-                </TouchableOpacity>
+    <FlatList
+      data={data}
+      keyExtractor={item => item.city}
+      renderItem={({item}) => (
+        <Pressable
+          onPress={() => {
+            dispatch(getData(item.id));
+            {
+              item.favourite
+                ? dispatch(setFavourite(true))
+                : dispatch(setFavourite(false));
+            }
+            navigation.navigate('HomeScreen');
+          }}>
+          <View style={styles.listItem}>
+            <View>
+              <Text style={styles.location}>
+                {item.city}, {item.region}
+              </Text>
+              <View style={styles.tempDetails}>
+                <Image source={item.source} style={styles.weather} />
+                <Text style={styles.actualTemp}>{item.temperature}</Text>
+                <Text style={styles.unit}>°C</Text>
+                <Text style={styles.description}>{item.description}</Text>
               </View>
-            </Pressable>
-          )}
-        />
-      </View>
-    </View>
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                dispatch(deleteRecentCity({id: item.city}));
+              }}>
+              {item.favourite ? (
+                <Image
+                  source={require('/Volumes/Development/Projects/WeatherApp/src/assets/icons/icon_favourite_active.png')}
+                  style={styles.favIcon}
+                />
+              ) : (
+                <Image
+                  source={require('/Volumes/Development/Projects/WeatherApp/src/assets/icons/icon_favourite.png')}
+                  style={styles.favIcon}
+                />
+              )}
+            </TouchableOpacity>
+          </View>
+        </Pressable>
+      )}
+    />
   );
 };
 
 export default RecentList;
 
 const styles = StyleSheet.create({
-  content: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 15,
-  },
-  addedText: {
-    height: 15,
-    color: '#FFFFFF',
-    fontSize: 13,
-    letterSpacing: 0,
-    lineHeight: 15,
-  },
-  removeAll: {
-    height: 15,
-    color: '#FFFFFF',
-    fontSize: 13,
-    fontWeight: '500',
-    letterSpacing: 0,
-    lineHeight: 15,
-  },
   listItem: {
     height: 80,
     marginHorizontal: 16,

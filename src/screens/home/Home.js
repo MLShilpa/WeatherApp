@@ -75,122 +75,126 @@ const Home = ({navigation}) => {
   const obj = {
     id: list.location?.name,
     city: list.location?.name,
-    region:list.location?.region,
+    region: list.location?.region,
     source: source,
     temperature: celcius,
     description: list.current?.condition.text,
   };
 
   const handlePress = () => {
-    favourite ? 
-    (
-      dispatch(setFavourite(false)),
-    dispatch(deleteCity(obj))
-    )
-    : 
-    (
-      dispatch(setFavourite(true)),
-      dispatch(addCity(obj)))
-      if(!favourite)
-      {
-        dispatch(setFavourite(true))
+    favourite
+      ? (dispatch(setFavourite(false)), dispatch(deleteCity(obj)))
+      : (dispatch(setFavourite(true)), dispatch(addCity(obj)));
+    if (!favourite) {
+      dispatch(setFavourite(true));
+    } else {
+      dispatch(setFavourite(false));
+    }
+  };
 
-      } else{
-        dispatch(setFavourite(false))
-      }
-  }
-  
-  ;
   return (
     <>
       {!search ? (
-        <View style={styles.container}>
-          <ImageBackground
-            source={background}
-            resizeMode="cover"
-            style={styles.container}>
-            <ScrollView style={{flex: 1}}>
-              <View style={styles.topBarView}>
-                <View style={styles.topView}>
-                  <Pressable onPress={handleDrawer}>
-                    <Image source={icon_menu} style={styles.menu}></Image>
-                  </Pressable>
-                  <Image source={logo} style={styles.logo}></Image>
-                </View>
-                <TouchableOpacity onPress={handleSearch}>
-                  <Image source={icon_search} style={styles.search}></Image>
-                </TouchableOpacity>
-              </View>
+        <ImageBackground
+          source={background}
+          resizeMode="cover"
+          style={styles.container}>
+          <SafeAreaView style={styles.container}>
+            
+              <View style={{flex:1}} >
+                <View style={styles.topBarView}>
+                  <View style={styles.topView}>
+                    <Pressable onPress={handleDrawer}>
+                      <Image source={icon_menu} style={styles.menu}></Image>
+                    </Pressable>
+                    <Image source={logo} style={styles.logo}></Image>
+                  </View>
+                  <TouchableOpacity onPress={handleSearch}>
+                    <Image source={icon_search} style={styles.search}></Image>
+                  </TouchableOpacity>
+                </View >
+                <ScrollView style={{flex:1}} >
+                <View style={styles.textView}>
+                  <Text style={styles.text}>{date}</Text>
+                  <Text style={styles.place}>
+                    {list.location?.name},{list.location?.region}
+                  </Text>
 
-              <View style={styles.textView}>
-                <Text style={styles.text}>{date}</Text>
-                <Text style={styles.place}>
-                  {list.location?.name},{list.location?.region}
-                </Text>
-
-                <View style={styles.favouriteView}>
-                  {favourite ? (
-                    <>
-                      <TouchableOpacity onPress={handlePress}>
-                        <Image
-                          source={icon_favourite_active}
-                          style={styles.favourite}
-                        />
-                      </TouchableOpacity>
-                      <Text style={styles.favouriteText}>Favourite</Text>
-                    </>
-                  ) : (
-                    <>
-                      <TouchableOpacity onPress={handlePress}>
-                        <Image
-                          source={icon_favourite}
-                          style={styles.favourite}
-                        />
-                      </TouchableOpacity>
-                      <Text style={styles.favouriteText}>Add To Favourite</Text>
-                    </>
-                  )}
-                </View>
-
-                <View style={styles.temperatureView}>
-                  <Image
-                    source={{uri: `https:${list.current?.condition.icon}`}}
-                    style={styles.sun}></Image>
-
-                  <View style={styles.numView}>
-                    <Text style={styles.number}>{celcius}</Text>
-                    <View style={styles.uniqueGroup}>
-                      {celcius == list.current?.temp_c ? (
-                        <>
-                          <TouchableOpacity onPress={handleCelcius}>
-                            <Text style={styles.celcius}>°C</Text>
-                          </TouchableOpacity>
-                          <TouchableOpacity onPress={handleFaranheit}>
-                            <Text style={styles.faranheit}>°F</Text>
-                          </TouchableOpacity>
-                        </>
-                      ) : (
-                        <>
-                          <TouchableOpacity onPress={handleCelcius}>
-                            <Text style={styles.faranheit}>°C</Text>
-                          </TouchableOpacity>
-                          <TouchableOpacity onPress={handleFaranheit}>
-                            <Text style={styles.celcius}>°F</Text>
-                          </TouchableOpacity>
-                        </>
-                      )}
-                    </View>
+                  <View style={styles.favouriteView}>
+                    {favourite ? (
+                      <>
+                        <TouchableOpacity onPress={handlePress}>
+                          <Image
+                            source={icon_favourite_active}
+                            style={styles.favourite}
+                          />
+                        </TouchableOpacity>
+                        <Text style={styles.favouriteText}>Favourite</Text>
+                      </>
+                    ) : (
+                      <>
+                        <TouchableOpacity onPress={handlePress}>
+                          <Image
+                            source={icon_favourite}
+                            style={styles.favourite}
+                          />
+                        </TouchableOpacity>
+                        <Text style={styles.favouriteText}>
+                          Add To Favourite
+                        </Text>
+                      </>
+                    )}
                   </View>
 
-                  <Text style={styles.tempText}>
-                    {list.current?.condition.text}
-                  </Text>
+                  <View style={styles.temperatureView}>
+                    <Image
+                      source={{uri: `https:${list.current?.condition.icon}`}}
+                      style={styles.sun}></Image>
+
+                    <View style={styles.numView}>
+                      <Text style={styles.number}>{celcius}</Text>
+                      <View style={styles.uniqueGroup}>
+                        {celcius == list.current?.temp_c ? (
+                          <>
+                            <TouchableOpacity onPress={handleCelcius}>
+                              <Text style={styles.celcius}>°C</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleFaranheit}>
+                              <Text style={styles.faranheit}>°F</Text>
+                            </TouchableOpacity>
+                          </>
+                        ) : (
+                          <>
+                            <TouchableOpacity onPress={handleCelcius}>
+                              <Text style={styles.faranheit}>°C</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleFaranheit}>
+                              <Text style={styles.celcius}>°F</Text>
+                            </TouchableOpacity>
+                          </>
+                        )}
+                      </View>
+                    </View>
+
+                    <Text style={styles.tempText}>
+                      {list.current?.condition.text}
+                    </Text>
+                  </View>
+                </View>
+
+                
+
+                </ScrollView>
+
+                <View style={{flex:0.4}}>
+                <ScrollBar />
                 </View>
               </View>
-            </ScrollView>
-            <ScrollBar />
-          </ImageBackground>
-        </View>
+             
+            
+           
+          </SafeAreaView>
+        </ImageBackground>
       ) : (
         <Search setSearch={setSearch} search={search} />
       )}
@@ -204,7 +208,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   topBarView: {
-    marginTop: 42,
+    marginTop: 10,
     paddingHorizontal: '5%',
     flexDirection: 'row',
     alignItems: 'center',
@@ -230,6 +234,7 @@ const styles = StyleSheet.create({
   },
 
   textView: {
+    // flex:1,
     marginTop: 54,
     alignItems: 'center',
     justifyContent: 'center',
@@ -287,7 +292,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontSize: 52,
     fontWeight: '500',
-    lineHeight:66,
+    lineHeight: 66,
   },
   sun: {
     height: 80,

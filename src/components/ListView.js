@@ -15,23 +15,15 @@ import { useDispatch } from 'react-redux';
 import { deleteCity,setFavourite } from '../redux/FavouriteSlice';
 import { getData } from '../redux/WeatherSlice';
   
-  const ListView = ({navigation,onPress}) =>{
+  const ListView = ({navigation}) =>{
     const dispatch = useDispatch();
 
     const data = useSelector(state => state.favourite.value);
 
-    console.log(data)
 
     return(
 
-        <View>
-        <View style={styles.content}>
-          <Text style={styles.addedText}>{data.length} City added as favourite</Text>
-          <TouchableOpacity onPress={onPress}>
-            <Text style={styles.removeAll}>Remove All</Text>
-          </TouchableOpacity>
-        </View>
-        <View>
+        
         <FlatList
         data={data}
         keyExtractor = {item => item.city}
@@ -76,8 +68,7 @@ import { getData } from '../redux/WeatherSlice';
         </Pressable>
         )}
         />
-        </View>
-        </View>
+      
 
     )
   }
@@ -85,26 +76,6 @@ import { getData } from '../redux/WeatherSlice';
   export default ListView;
 
   const styles=StyleSheet.create({
-    content: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        margin:16,
-      },
-      addedText: {
-        height: 15,
-        color: '#FFFFFF',
-        fontSize: 13,
-        letterSpacing: 0,
-        lineHeight: 15,
-      },
-      removeAll: {
-        height: 15,
-        color: '#FFFFFF',
-        fontSize: 13,
-        fontWeight: '600',
-        letterSpacing: 0,
-        lineHeight: 15,
-      },
       listItem: {
         height: 80,
         marginHorizontal: 16,

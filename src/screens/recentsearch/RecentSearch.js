@@ -6,16 +6,16 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
+  ScrollView,
   Alert,
 } from 'react-native';
 import background from '../../assets/images/background.png';
 import TopBar from '../../components/TopBar';
 import Nothing from '../../components/Nothing';
 import RecentList from '../../components/RecentList';
-import { useSelector } from 'react-redux';
-import { clearAll } from '../../redux/FavouriteSlice';
-import { useDispatch } from 'react-redux';
-
+import {useSelector} from 'react-redux';
+import {clearAll} from '../../redux/FavouriteSlice';
+import {useDispatch} from 'react-redux';
 
 const RecentSearch = ({navigation}) => {
   const data = useSelector(state => state.favourite.recent);
@@ -29,15 +29,19 @@ const RecentSearch = ({navigation}) => {
     navigation.goBack();
   };
 
-  const createTwoButtonAlert = () => 
-  Alert.alert('', 'Are you sure want to remove all the favourites?', [
-    {
-      text: 'NO',
-      onPress: () => console.log('No Pressed'),
-    },
-    {text: 'YES', onPress: () => {
-      dispatch(clearAll())}}
-  ]);
+  const createTwoButtonAlert = () =>
+    Alert.alert('', 'Are you sure want to remove all the favourites?', [
+      {
+        text: 'NO',
+        onPress: () => console.log('No Pressed'),
+      },
+      {
+        text: 'YES',
+        onPress: () => {
+          dispatch(clearAll());
+        },
+      },
+    ]);
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -46,16 +50,24 @@ const RecentSearch = ({navigation}) => {
         style={styles.container}>
         <SafeAreaView style={styles.safeView}>
           <TopBar Name={'Recent Search'} onPress={handleBack} />
-            {/* <Nothing text={'No Favourites added'}/> */}
-            
-            {data.length?(
-           <>
-              <View style={{flex:1}}>
-                <RecentList navigation={navigation} onPress={createTwoButtonAlert}/>
+          {/* <Nothing text={'No Favourites added'}/> */}
+
+          {data.length ? (
+            <>
+              <View style={styles.content}>
+                <Text style={styles.addedText}>You Recently searched for</Text>
+                <TouchableOpacity onPress={createTwoButtonAlert}>
+                  <Text style={styles.removeAll}>Clear All</Text>
+                </TouchableOpacity>
               </View>
-          </>
-          ):(
-            <Nothing text={'No Recent Search'}/>
+              <View style={{flex:1}}>
+                <RecentList
+                  navigation={navigation}
+                />
+              </View>
+            </>
+          ) : (
+            <Nothing text={'No Recent Search'} />
           )}
         </SafeAreaView>
       </ImageBackground>
@@ -69,6 +81,27 @@ const styles = StyleSheet.create({
   },
   safeView: {
     flex: 1,
+  },
+  content: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 15,
+  },
+  addedText: {
+    height: 15,
+    color: '#FFFFFF',
+    fontSize: 13,
+    letterSpacing: 0,
+    lineHeight: 15,
+  },
+  removeAll: {
+    height: 15,
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: '500',
+    letterSpacing: 0,
+    lineHeight: 15,
   },
 });
 export default RecentSearch;
