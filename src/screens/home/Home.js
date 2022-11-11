@@ -81,10 +81,15 @@ const Home = ({navigation}) => {
   };
 
   const handlePress = () => {
-    // dispatch(addCity(obj)),
-    setClicked(!clicked), 
-    dispatch(setFavourite(clicked));
-    favourite ? dispatch(deleteCity(obj)) : dispatch(addCity(obj));
+    favourite ? 
+    (
+      dispatch(setFavourite(false)),
+    dispatch(deleteCity(obj))
+    )
+    : 
+    (
+      dispatch(setFavourite(true)),
+      dispatch(addCity(obj)))
   };
   return (
     <>
