@@ -20,13 +20,10 @@ import { useDispatch } from 'react-redux';
 const RecentSearch = ({navigation}) => {
   const data = useSelector(state => state.favourite.recent);
   const dispatch = useDispatch();
-  const [remove, setRemove] = useState(false);
 
-  // if(!data.length)
-  // {
-  //   return(setRemove(!remove))
-    
-  // }
+  // useEffect (()=>{
+  //   !data.length ? (setRemove(true)): setRemove(false)
+  // },[])
 
   const handleBack = () => {
     navigation.goBack();
@@ -52,7 +49,7 @@ const RecentSearch = ({navigation}) => {
           <TopBar Name={'Recent Search'} onPress={handleBack} />
             {/* <Nothing text={'No Favourites added'}/> */}
             
-            {!remove?(
+            {data.length?(
            <>
               <View style={{flex:1}}>
                 <RecentList navigation={navigation} onPress={createTwoButtonAlert}/>

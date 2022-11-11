@@ -14,11 +14,12 @@ import background from '../../assets/images/background.png';
 import TopBar from '../../components/TopBar';
 import ListView from '../../components/ListView';
 import Nothing from '../../components/Nothing';
-import { useDispatch } from 'react-redux';
-import { removeAll } from '../../redux/FavouriteSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeAll,setFavourite } from '../../redux/FavouriteSlice';
 
 const Favourite = ({navigation}) => {
-  const [remove, setRemove] = useState(false);
+  const data = useSelector(state => state.favourite.value);
+
   const dispatch = useDispatch();
   const handleBack = () => {
     navigation.goBack();
@@ -29,11 +30,12 @@ const Favourite = ({navigation}) => {
         text: 'NO',
         onPress: () => console.log('No Pressed'),
       },
-      {text: 'YES', onPress: () => 
-      {
-        dispatch(removeAll())
-        setRemove(!remove)}},
-    ]);
+      {text: 'YES', onPress: () => {
+        dispatch(removeAll()),
+        dispatch(setFavourite(false))
+      }
+    }
+  ]);
 
   return (
     <View style={styles.container}>
@@ -45,7 +47,7 @@ const Favourite = ({navigation}) => {
           <TopBar Name={'Favourites'} onPress={handleBack} />
             {/* <Nothing text={'No Favourites added'}/> */}
             
-            {!remove?(
+            { data.length? (
            <>
               <View style={{flex:1}}>
                 <ListView navigation={navigation} onPress={createTwoButtonAlert}/>
